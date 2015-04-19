@@ -9,5 +9,26 @@ Some things to note that went into the design are:
 
 ## Usage
 
-Import the backswipeview module to your project, or add the files BackSwipeLayout.java and BackSwipeManager.java to your project.
+1.) Import the backswipeview module to your project, or add the files BackSwipeLayout.java and BackSwipeManager.java to your project.
+
+2.) Make the BackSwipeView class the root view in your activity layout.
+
+3.) In your activities onCreate method add  something like the following code 
+```
+    BackSwipeLayout backSwipeLayout = (BackSwipeLayout) findViewById(R.id.back_swipe_layout);
+    FragmentManager fm = getSupportFragmentManager();
+    // Create a BackSwipeManager to handle fragment transactions when you back swipe
+    mBackSwipeManager = new BackSwipeManager(fm, backSwipeLayout);
+    if (savedInstanceState == null) {
+        // Only add the base fragment once since the fragment stack is restored from saved instance state.
+        Fragment contentFragment = SampleFragment.newInstance();
+        mBackSwipeManager.setBaseFragment(contentFragment);
+    }
+```
+4.) Adding more fragments
+```
+// Adds a content fragment that will be back swipe enabled. 
+mBackSwipeManager.addContentFragment(content);
+```
+
 
