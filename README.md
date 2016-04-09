@@ -11,7 +11,15 @@ Some things to note that went into the design are:
 
 ## Usage
 
-1. Import the backswipeview module to your project, or add the files BackSwipeLayout.java and BackSwipeManager.java to your project.
+1. Import the backswipeview module to your project by adding the following to your project build.gradle in allprojects -> repositories.
+```
+    maven {
+        url  "http://dl.bintray.com/jetpeter/maven"
+    }
+```
+Then add `compile 'me.jefferey.backswipeview:backswipeview:1.0.0'` application dependincies
+
+Alternitively add the files BackSwipeLayout.java and BackSwipeManager.java to your project.
 
 2. Make the BackSwipeView class the root view in your activity layout.
 
