@@ -114,7 +114,6 @@ public class BackSwipeLayout extends ViewGroup {
             if (getChildCount() > 1) {
                 final View contentView = getChildAt(getChildCount() - 1);
                 final View incomingView = getChildAt(getChildCount() - 2);
-                int halfWidth = contentView.getWidth() / 2;
                 int incomingLeft = left - contentView.getWidth();
                 incomingView.layout((incomingLeft / 2), contentView.getTop(), left, contentView.getBottom());
             }
@@ -190,9 +189,8 @@ public class BackSwipeLayout extends ViewGroup {
     }
 
     public interface BackSwipeInterface {
-        public void onBackSwipeStarted();
-        //No longer needed because we move the incoming view in the layout
-        //public void onBackSwipeMove(int leftPosition);
-        public void onBackSwipeEnd(boolean didSwipeBack);
+        void onBackSwipeStarted();
+
+        void onBackSwipeEnd(boolean didSwipeBack);
     }
 }

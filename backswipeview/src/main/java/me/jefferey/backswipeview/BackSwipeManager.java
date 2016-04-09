@@ -21,6 +21,7 @@ public class BackSwipeManager implements BackSwipeLayout.BackSwipeInterface, Fra
         mBackSwipeLayout.setBackSwipeEnabled(fragmentManager.getBackStackEntryCount() > 0);
         mContentViewId = mBackSwipeLayout.getId();
         mFragmentManager = fragmentManager;
+        hideBackStackFragments();
         mFragmentManager.addOnBackStackChangedListener(this);
     }
 
@@ -88,5 +89,21 @@ public class BackSwipeManager implements BackSwipeLayout.BackSwipeInterface, Fra
         } else {
             return null;
         }
+    }
+
+    /**
+     * When the fragment manager is restored from saved instance state hidden fragments are made visible
+     * again. This is called in the constructor to make sure that back stack fragments are now made
+     * visible.
+     */
+    private void hideBackStackFragments() {
+        int entryCount = mFragmentManager.getBackStackEntryCount();
+        FragmentTransaction ft =  mFragmentManager.beginTransaction();
+        for (int i = 0; i < entryCount; i++) {
+            FragmentManager.BackStackEntry entry = mFragmentManager.getBackStackEntryAt(i);
+            Fragment frag = mFragmentManager.findFragmentByTag(entry.getName());
+            ft.hide(frag);
+        }
+        ft.commit();
     }
 }
