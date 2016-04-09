@@ -3,13 +3,13 @@ package me.jefferey.backswipe;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import me.jefferey.backswipeview.BackSwipeLayout;
 import me.jefferey.backswipeview.BackSwipeManager;
 
 
-public class SampleActivity extends ActionBarActivity implements  SampleFragment.ContentFragmentInterface {
+public class SampleActivity extends AppCompatActivity implements  SampleFragment.ContentFragmentInterface {
 
     private BackSwipeManager mBackSwipeManager;
 

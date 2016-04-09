@@ -3,6 +3,7 @@ package me.jefferey.backswipeview;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 /**
  * Created by jpetersen on 4/12/15.
@@ -50,14 +51,42 @@ public class BackSwipeManager implements BackSwipeLayout.BackSwipeInterface, Fra
         ft.add(mContentViewId, fragment, FRAGMENT_TAG + "_" + (backStackCount + 1));
         ft.hide(currentContentFragment);
         ft.commit();
+
+        if (backStackCount > 0) {
+            FragmentTransaction detachTransaction = mFragmentManager.beginTransaction();
+            FragmentManager.BackStackEntry entry = mFragmentManager.getBackStackEntryAt(backStackCount - 1);
+            Fragment detachFragment = mFragmentManager.findFragmentByTag(entry.getName());
+            if (!detachFragment.isDetached()) {
+                detachTransaction.detach(detachFragment);
+            }
+            detachTransaction.commit();
+            Log.v("BackStackManager", "Detaching Fragment at " + (backStackCount - 1));
+        }
     }
+
+    private int mCurrentBackStackCount = 0;
 
     @Override
     public void onBackStackChanged() {
-        if (mFragmentManager.getBackStackEntryCount() == 0) {
+        int backStackCount = mFragmentManager.getBackStackEntryCount();
+        boolean wentBack = backStackCount < mCurrentBackStackCount;
+        mCurrentBackStackCount = backStackCount;
+        if (backStackCount == 0) {
             mBackSwipeLayout.setBackSwipeEnabled(false);
         } else {
             mBackSwipeLayout.setBackSwipeEnabled(true);
+        }
+
+        if (wentBack && backStackCount >= 1) {
+            FragmentTransaction attachTransaction = mFragmentManager.beginTransaction();
+            FragmentManager.BackStackEntry entry = mFragmentManager.getBackStackEntryAt(backStackCount - 1);
+            Fragment attachFragment = mFragmentManager.findFragmentByTag(entry.getName());
+            if (attachFragment.isDetached()) {
+                attachTransaction.attach(attachFragment);
+                attachTransaction.hide(attachFragment);
+            }
+            attachTransaction.commit();
+            Log.v("BackStackManager", "Attaching Fragment at " + (backStackCount - 1));
         }
     }
 
